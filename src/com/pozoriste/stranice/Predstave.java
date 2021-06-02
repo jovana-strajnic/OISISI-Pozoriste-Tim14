@@ -4,6 +4,8 @@ import com.pozoriste.model.Predstava;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -24,7 +26,7 @@ public class Predstave extends JPanel {
         p.setDatum(LocalDateTime.now());
         p.setOpis("opis predstae");
         svePredstave.add(p);
-        
+
         p = new Predstava();
         p.setNaziv("TEST 2");
         p.setCena(282);
@@ -40,6 +42,14 @@ public class Predstave extends JPanel {
         //da se vidi zaglavlje i da moze da se skroluje
         JScrollPane pane = new JScrollPane(tabela);
         add(pane);
+        JButton dodaj=new JButton("Dodaj");
+        dodaj.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new DodavanjePredstave().setVisible(true);
+            }
+        });
+        add(dodaj);
     }
 
 

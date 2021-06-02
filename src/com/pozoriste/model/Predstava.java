@@ -15,6 +15,8 @@ public class Predstava implements Serializable {
     private float cena;
     private Map<Integer, Boolean> sedista = new HashMap<Integer, Boolean>();
     private boolean rasprodato;
+    private int sifra;
+
 
     public Predstava() {
         //stavimo sva sedista na slobodna
@@ -69,4 +71,13 @@ public class Predstava implements Serializable {
     public void setRasprodato(boolean rasprodato) {
         this.rasprodato = rasprodato;
     }
+
+    public int getSifra() {
+        return sifra;
+    }
+
+    public void setSifra(int sifra) {
+        this.sifra = sifra;
+    }
+
 }
