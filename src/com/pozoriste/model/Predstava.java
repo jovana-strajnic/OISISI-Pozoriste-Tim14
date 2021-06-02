@@ -3,8 +3,10 @@ package com.pozoriste.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Predstava implements Serializable {
+
 
     //sva polja koje ima predstava
     private String naziv;
