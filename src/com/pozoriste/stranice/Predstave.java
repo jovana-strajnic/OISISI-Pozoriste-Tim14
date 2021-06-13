@@ -1,5 +1,6 @@
 package com.pozoriste.stranice;
 
+import com.pozoriste.GlavniProzor;
 import com.pozoriste.model.Korisnik;
 import com.pozoriste.model.Predstava;
 
@@ -19,8 +20,9 @@ public class Predstave extends JPanel {
 
     //korisnik koji je ulogovan
     private Korisnik ulogovanikorisnik;
+
     public Predstave(Korisnik k) {
-        ulogovanikorisnik=k;
+        ulogovanikorisnik = k;
         //neke predstave za testiranje, izbrisacemo posle
         Predstava p = new Predstava();
         p.setNaziv("TEST");
@@ -52,6 +54,16 @@ public class Predstave extends JPanel {
             }
         });
         add(dodaj);
+
+        //odjava
+        JButton odjava = new JButton("Odjava");
+        odjava.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GlavniProzor.getAktivniProzor().promeniStranicu(new Pocetna());
+            }
+        });
+        add(odjava);
     }
 
 

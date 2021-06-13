@@ -1,7 +1,9 @@
 package com.pozoriste.stranice;
 
+import com.pozoriste.Fajlovi;
 import com.pozoriste.GlavniProzor;
 import com.pozoriste.model.Korisnik;
+import com.pozoriste.model.TipKorisnika;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,9 +14,20 @@ import java.util.List;
 
 public class Pocetna extends JPanel {
     //svi korisnici
-    private List<Korisnik> korisnici = new ArrayList<Korisnik>();
+    private List<Korisnik> korisnici ;
 
     public Pocetna() {
+        korisnici= (List<Korisnik>) Fajlovi.ProcitajIzFajla("./korisnici.k");
+        //ako nema fajla dodamo samo podrazumvanog admina
+        if(korisnici==null){
+            korisnici=new ArrayList<Korisnik>();
+            Korisnik admin=new Korisnik();
+            admin.setTipkorisnika(TipKorisnika.ADMINISTRATOR);
+            admin.setLozinka("admin");
+            admin.setKorisnickoIme("admin");
+            korisnici.add(admin);
+            Fajlovi.SnimiUFajl(korisnici,"./korisnici.k");
+        }
         setBackground(new Color(120, 0, 0));
         // da stoje na srediti, ovaj layout po defaultu to radi
         setLayout(new GridBagLayout());

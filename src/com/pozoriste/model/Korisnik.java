@@ -1,9 +1,10 @@
 package com.pozoriste.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Korisnik {
+public class Korisnik implements Serializable {
     private String korisnickoIme;
     private String ime;
     private String prezime;

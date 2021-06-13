@@ -14,7 +14,7 @@ public class Prijava extends JDialog {
     private Korisnik ulogovanKorisnik=null;
     public Prijava(List<Korisnik> korisnici) {
         setModal(true);
-        setSize(new Dimension(300, 400));
+        setSize(new Dimension(300, 200));
         setLayout(new GridLayout(3, 2));
 
 
@@ -38,7 +38,7 @@ public class Prijava extends JDialog {
             }
         });
 
-        JButton dodaj = new JButton("Registruj se");
+        JButton dodaj = new JButton("Prijavi se");
         add(dodaj);
         dodaj.addActionListener(new ActionListener() {
             @Override

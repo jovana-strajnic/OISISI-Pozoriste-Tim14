@@ -1,5 +1,6 @@
 package com.pozoriste.stranice;
 
+import com.pozoriste.Fajlovi;
 import com.pozoriste.model.Korisnik;
 import com.pozoriste.model.TipKorisnika;
 
@@ -85,6 +86,8 @@ public class Registracija extends JDialog {
                     korisnik.setTipkorisnika(TipKorisnika.KORISNIK);
                     korisnik.setLozinka(lozinka);
                     korisnici.add(korisnik);
+                    //cuvanej u fajl:\
+                    Fajlovi.SnimiUFajl(korisnici, "./korisnici.k");
                     setVisible(false);
 
                 }
