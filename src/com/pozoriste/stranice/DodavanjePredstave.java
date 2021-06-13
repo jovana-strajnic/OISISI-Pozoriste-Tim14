@@ -61,7 +61,6 @@ public class DodavanjePredstave extends JDialog {
                 String cena = cenaUnos.getText().trim();
                 Date datum = (Date) spiner.getValue();
                 float parsiranaCena = 0;
-                System.out.println(datum.getTime());
                 String greska = "";
                 if (naziv.equals(""))
                     greska += "Naziv nije unet\n";

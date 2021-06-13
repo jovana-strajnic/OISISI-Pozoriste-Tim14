@@ -63,7 +63,4 @@ public class Korisnik {
     }
 }
 
-//enumeraciaj za tipove korisnika
-enum TipKorisnika {
-    ADMINISTRATOR, KORISNIK
-};
+;
