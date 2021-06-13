@@ -1,5 +1,6 @@
 package com.pozoriste.stranice;
 
+import com.pozoriste.model.Korisnik;
 import com.pozoriste.model.Predstava;
 
 import javax.swing.*;
@@ -16,7 +17,10 @@ public class Predstave extends JPanel {
     //sve koje postoje u sisitemu
     private List<Predstava> svePredstave = new LinkedList<Predstava>();
 
-    public Predstave() {
+    //korisnik koji je ulogovan
+    private Korisnik ulogovanikorisnik;
+    public Predstave(Korisnik k) {
+        ulogovanikorisnik=k;
         //neke predstave za testiranje, izbrisacemo posle
         Predstava p = new Predstava();
         p.setNaziv("TEST");

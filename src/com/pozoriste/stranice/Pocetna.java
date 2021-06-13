@@ -1,5 +1,6 @@
 package com.pozoriste.stranice;
 
+import com.pozoriste.GlavniProzor;
 import com.pozoriste.model.Korisnik;
 
 import javax.swing.*;
@@ -26,6 +27,11 @@ public class Pocetna extends JPanel {
         prijava.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Prijava p = new Prijava(korisnici);
+                p.setVisible(true);
+                if (p.getUlogovanKorisnik() != null) {
+                    GlavniProzor.getAktivniProzor().promeniStranicu(new Predstave(p.getUlogovanKorisnik()));
+                }
 
             }
         });
@@ -33,7 +39,7 @@ public class Pocetna extends JPanel {
         registracija.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-    new Registracija(korisnici).setVisible(true);
+                new Registracija(korisnici).setVisible(true);
             }
         });
 
