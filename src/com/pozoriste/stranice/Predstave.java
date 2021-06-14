@@ -2,6 +2,7 @@ package com.pozoriste.stranice;
 
 import com.pozoriste.Fajlovi;
 import com.pozoriste.GlavniProzor;
+import com.pozoriste.model.Karta;
 import com.pozoriste.model.Korisnik;
 import com.pozoriste.model.Predstava;
 import com.pozoriste.model.TipKorisnika;
@@ -23,11 +24,19 @@ public class Predstave extends JPanel {
     //korisnik koji je ulogovan
     private Korisnik ulogovanikorisnik;
 
+    //sve koje postoje u sisitemu
+    private List<Karta> sveKarte;
+
+
     public Predstave(Korisnik k) {
         ulogovanikorisnik = k;
         svePredstave = (List<Predstava>) Fajlovi.ProcitajIzFajla("./predstave.p");
         if (svePredstave == null)
             svePredstave = new LinkedList<Predstava>();
+
+        sveKarte = (List<Karta>) Fajlovi.ProcitajIzFajla("./karte.k");
+        if (sveKarte == null)
+            sveKarte = new LinkedList<Karta>();
         JTable tabela = new JTable();
         tabela.setModel(new ModelTabele(svePredstave, ulogovanikorisnik));
 
@@ -37,8 +46,8 @@ public class Predstave extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selektovanRed = Integer.valueOf(e.getActionCommand());
-                new DetaljiPredstave(svePredstave.get(selektovanRed)).setVisible(true);
-
+                new DetaljiPredstave(svePredstave.get(selektovanRed), ulogovanikorisnik, sveKarte, svePredstave).setVisible(true);
+                ((ModelTabele) tabela.getModel()).fireTableDataChanged();
             }
         };
 
