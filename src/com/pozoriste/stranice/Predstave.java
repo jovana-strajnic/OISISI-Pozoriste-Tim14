@@ -28,7 +28,7 @@ public class Predstave extends JPanel {
     private List<Karta> sveKarte;
 
 
-    public Predstave(Korisnik k) {
+    public Predstave(Korisnik k,List<Korisnik> sviKorisnici) {
         ulogovanikorisnik = k;
         svePredstave = (List<Predstava>) Fajlovi.ProcitajIzFajla("./predstave.p");
         if (svePredstave == null)
@@ -46,7 +46,7 @@ public class Predstave extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selektovanRed = Integer.valueOf(e.getActionCommand());
-                new DetaljiPredstave(svePredstave.get(selektovanRed), ulogovanikorisnik, sveKarte, svePredstave).setVisible(true);
+                new DetaljiPredstave(svePredstave.get(selektovanRed), ulogovanikorisnik, sveKarte, svePredstave,sviKorisnici).setVisible(true);
                 ((ModelTabele) tabela.getModel()).fireTableDataChanged();
             }
         };
@@ -78,7 +78,21 @@ public class Predstave extends JPanel {
                 new DodavanjePredstave(svePredstave, tabela, null).setVisible(true);
             }
         });
-        add(dodaj);
+        //samo za admina dajemo da ima dodavanje
+        if (ulogovanikorisnik.getTipkorisnika() == TipKorisnika.ADMINISTRATOR)
+            add(dodaj);
+
+
+        JButton izvestajZaSve = new JButton("Izvestaj");
+        izvestajZaSve.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               // GlavniProzor.getAktivniProzor().promeniStranicu(new Pocetna());
+            }
+        });
+        if (ulogovanikorisnik.getTipkorisnika() == TipKorisnika.ADMINISTRATOR)
+            add(izvestajZaSve);
+
 
         //odjava
         JButton odjava = new JButton("Odjava");
@@ -104,7 +118,8 @@ public class Predstave extends JPanel {
             kolone.add("Datum");
             kolone.add("Cena");
             kolone.add("Rasprodato");
-            kolone.add("Detalji");// SHOW DETAILS
+            kolone.add("Detalji");
+            //samo admin vidi izmenu
             if (ulogovan.getTipkorisnika() == TipKorisnika.ADMINISTRATOR)
                 kolone.add("Izmeni");
             this.svePredstave = svePredstave;

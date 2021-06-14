@@ -43,7 +43,7 @@ public class Pocetna extends JPanel {
                 Prijava p = new Prijava(korisnici);
                 p.setVisible(true);
                 if (p.getUlogovanKorisnik() != null) {
-                    GlavniProzor.getAktivniProzor().promeniStranicu(new Predstave(p.getUlogovanKorisnik()));
+                    GlavniProzor.getAktivniProzor().promeniStranicu(new Predstave(p.getUlogovanKorisnik(),korisnici));
                 }
 
             }

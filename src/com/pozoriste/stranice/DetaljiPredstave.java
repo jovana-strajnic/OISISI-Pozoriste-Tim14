@@ -1,12 +1,9 @@
 package com.pozoriste.stranice;
 
 import com.pozoriste.Fajlovi;
-import com.pozoriste.model.Karta;
-import com.pozoriste.model.Korisnik;
-import com.pozoriste.model.Predstava;
+import com.pozoriste.model.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,10 +11,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class DetaljiPredstave extends JDialog {
-    public DetaljiPredstave(Predstava p, Korisnik korisnik, java.util.List<Karta> sveKarte, java.util.List<Predstava> svePredstave) {
+    public DetaljiPredstave(Predstava p, Korisnik korisnik, java.util.List<Karta> sveKarte, java.util.List<Predstava> svePredstave, java.util.List<Korisnik> sviKorisnici) {
         final Map<Integer, String> izabranaSedista = new HashMap<>();
         setModal(true);
         setSize(new Dimension(700, 500));
@@ -49,6 +45,9 @@ public class DetaljiPredstave extends JDialog {
                 sediste.setSelected(true);
                 sediste.setEnabled(false);
             }
+            if (korisnik.getTipkorisnika() == TipKorisnika.ADMINISTRATOR)
+                sediste.setEnabled(false);
+
             sediste.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -83,7 +82,7 @@ public class DetaljiPredstave extends JDialog {
         sedista.setBackground(new Color(175, 122, 110));
         JPanel dugmici = new JPanel();
         dugmici.add(ukupnaCena);
-        dugmici.setSize(new Dimension(2000, 150));
+        dugmici.setSize(new Dimension(2000, 100));
         // add(dugmici);
 
         JButton rezervisi = new JButton("Rezervisi");
@@ -98,6 +97,7 @@ public class DetaljiPredstave extends JDialog {
                     Karta k = new Karta();
                     k.setId(sveKarte.size());
                     k.setKorisnik(korisnik);
+                    korisnik.getKupljeneKarte().add(k);
                     k.setCena(p.getCena());
                     k.setPredstava(p);
                     k.setRed(i);
@@ -105,6 +105,7 @@ public class DetaljiPredstave extends JDialog {
                     k.setKolona((1 + i % 6));
                     sveKarte.add(k);
                     Fajlovi.SnimiUFajl(sveKarte, "./karte.k");
+                    Fajlovi.SnimiUFajl(sviKorisnici, "./korisnici.k");
                     p.getSedista().put(i, true);
                 }
                 if (p.getSedista().values().stream().filter(b -> b).count() == 30) {
@@ -114,11 +115,35 @@ public class DetaljiPredstave extends JDialog {
                 setVisible(false);
             }
         });
-        dugmici.add(rezervisi);
+        if (korisnik.getTipkorisnika() != TipKorisnika.ADMINISTRATOR)
+            dugmici.add(rezervisi);
         JSplitPane jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         jsp.setTopComponent(split);
         jsp.setBottomComponent(dugmici);
-        jsp.setDividerLocation(0.9);
+        jsp.setDividerLocation(410);
         add(jsp);
+
+
+        if (korisnik.getTipkorisnika() == TipKorisnika.ADMINISTRATOR) {
+            JButton izvestaj = new JButton("Izvestaj");
+            dugmici.add(izvestaj);
+            java.util.List<StavkaIzvestaja> izvestajLista = new ArrayList<>();
+            for (Karta k : sveKarte) {
+                if (k.getPredstava().getSifra() == p.getSifra()) {
+                    StavkaIzvestaja si = new StavkaIzvestaja();
+                    si.setId(k.getId());
+                    si.setCena(k.getCena());
+                    izvestajLista.add(si);
+                }
+            }
+            izvestaj.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new PrikazIzvestaja(izvestajLista).setVisible(true);
+                }
+            });
+        }
+
+
     }
 }
