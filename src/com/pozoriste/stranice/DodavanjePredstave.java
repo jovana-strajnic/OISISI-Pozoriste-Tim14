@@ -15,7 +15,7 @@ import java.util.List;
 
 public class DodavanjePredstave extends JDialog {
 
-    public DodavanjePredstave(List<Predstava> svePredstave, JTable tabela) {
+    public DodavanjePredstave(List<Predstava> svePredstave, JTable tabela, Predstava predstava) {
 
         setModal(true);
         setSize(new Dimension(300, 400));
@@ -48,6 +48,13 @@ public class DodavanjePredstave extends JDialog {
             }
         });
         add(nazad);
+
+        if (predstava != null) {
+            nazivUnos.setText(predstava.getNaziv());
+            opisUnos.setText(predstava.getOpis());
+            cenaUnos.setText("" + predstava.getCena());
+            spiner.setValue(Date.from(predstava.getDatum().atZone(ZoneId.systemDefault()).toInstant()));
+        }
 
         JButton dodaj = new JButton("Dodaj");
 
@@ -84,14 +91,18 @@ public class DodavanjePredstave extends JDialog {
                     JOptionPane.showMessageDialog(null, greska, "greska", JOptionPane.ERROR_MESSAGE);
                 } else {
                     Predstava nova = new Predstava();
+                    //editovbanje
+                    if (predstava != null)
+                        nova = predstava;
                     nova.setSifra(svePredstave.size());
                     nova.setOpis(opis);
                     nova.setDatum(datum.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
                     nova.setNaziv(naziv);
                     nova.setCena(parsiranaCena);
-                    svePredstave.add(nova);
+                    if (predstava == null)
+                        svePredstave.add(nova);
                     //cuvanje
-                    Fajlovi.SnimiUFajl(svePredstave,"./predstave.p");
+                    Fajlovi.SnimiUFajl(svePredstave, "./predstave.p");
                     //da se rerenderuje tabela
                     ((AbstractTableModel) tabela.getModel()).fireTableDataChanged();
                     setVisible(false);

@@ -33,7 +33,7 @@ public class Predstave extends JPanel {
 
         tabela.setColumnSelectionAllowed(false);
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        Action detalji=new AbstractAction() {
+        Action detalji = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selektovanRed = Integer.valueOf(e.getActionCommand());
@@ -46,6 +46,19 @@ public class Predstave extends JPanel {
         new ButtonColumn(tabela, detalji, 4);
 
 
+        Action izmena = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selektovanRed = Integer.valueOf(e.getActionCommand());
+                new DodavanjePredstave(svePredstave, tabela, svePredstave.get(selektovanRed)).setVisible(true);
+
+            }
+        };
+
+        //za dugme za detalje koristi se ova klasa sa interneta
+        new ButtonColumn(tabela, izmena, 5);
+
+
         //da se vidi zaglavlje i da moze da se skroluje
         JScrollPane pane = new JScrollPane(tabela);
         add(pane);
@@ -53,7 +66,7 @@ public class Predstave extends JPanel {
         dodaj.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new DodavanjePredstave(svePredstave, tabela).setVisible(true);
+                new DodavanjePredstave(svePredstave, tabela, null).setVisible(true);
             }
         });
         add(dodaj);
@@ -91,7 +104,7 @@ public class Predstave extends JPanel {
 
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return columnIndex>3;
+            return columnIndex > 3;
         }
 
         @Override
