@@ -1,8 +1,10 @@
 package com.pozoriste.stranice;
 
+import com.pozoriste.Fajlovi;
 import com.pozoriste.GlavniProzor;
 import com.pozoriste.model.Korisnik;
 import com.pozoriste.model.Predstava;
+import com.pozoriste.model.TipKorisnika;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -16,32 +18,33 @@ import java.util.List;
 
 public class Predstave extends JPanel {
     //sve koje postoje u sisitemu
-    private List<Predstava> svePredstave = new LinkedList<Predstava>();
+    private List<Predstava> svePredstave;
 
     //korisnik koji je ulogovan
     private Korisnik ulogovanikorisnik;
 
     public Predstave(Korisnik k) {
         ulogovanikorisnik = k;
-        //neke predstave za testiranje, izbrisacemo posle
-        Predstava p = new Predstava();
-        p.setNaziv("TEST");
-        p.setCena(282);
-        p.setDatum(LocalDateTime.now());
-        p.setOpis("opis predstae");
-        svePredstave.add(p);
-
-        p = new Predstava();
-        p.setNaziv("TEST 2");
-        p.setCena(282);
-        p.setDatum(LocalDateTime.now());
-        p.setOpis("opis 2");
-        p.setRasprodato(true);
-
-        svePredstave.add(p);
-
+        svePredstave = (List<Predstava>) Fajlovi.ProcitajIzFajla("./predstave.p");
+        if (svePredstave == null)
+            svePredstave = new LinkedList<Predstava>();
         JTable tabela = new JTable();
-        tabela.setModel(new ModelTabele(svePredstave));
+        tabela.setModel(new ModelTabele(svePredstave, ulogovanikorisnik));
+
+        tabela.setColumnSelectionAllowed(false);
+        tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        Action detalji=new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selektovanRed = Integer.valueOf(e.getActionCommand());
+                new DetaljiPredstave(svePredstave.get(selektovanRed)).setVisible(true);
+
+            }
+        };
+
+        //za dugme za detalje koristi se ova klasa sa interneta
+        new ButtonColumn(tabela, detalji, 4);
+
 
         //da se vidi zaglavlje i da moze da se skroluje
         JScrollPane pane = new JScrollPane(tabela);
@@ -74,19 +77,21 @@ public class Predstave extends JPanel {
         private List<String> kolone = new ArrayList<String>();
         private List<Predstava> svePredstave;
 
-        public ModelTabele(List<Predstava> svePredstave) {
+        public ModelTabele(List<Predstava> svePredstave, Korisnik ulogovan) {
             kolone.add("Ime");
             kolone.add("Datum");
             kolone.add("Cena");
             kolone.add("Rasprodato");
             kolone.add("Detalji");// SHOW DETAILS
+            if (ulogovan.getTipkorisnika() == TipKorisnika.ADMINISTRATOR)
+                kolone.add("Izmeni");
             this.svePredstave = svePredstave;
 
         }
 
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return false;
+            return columnIndex>3;
         }
 
         @Override
@@ -130,6 +135,8 @@ public class Predstave extends JPanel {
                         return "";
                 case 4:
                     return "VISE INFORMACIJA";
+                case 5:
+                    return "IZMENA";
             }
             return null;
         }

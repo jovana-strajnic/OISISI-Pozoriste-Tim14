@@ -1,6 +1,8 @@
 package com.pozoriste.model;
 
-public class Karta {
+import java.io.Serializable;
+
+public class Karta implements Serializable {
     private int id;
     private int red;
     private int kolona;

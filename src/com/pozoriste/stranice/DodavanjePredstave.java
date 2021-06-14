@@ -1,5 +1,6 @@
 package com.pozoriste.stranice;
 
+import com.pozoriste.Fajlovi;
 import com.pozoriste.model.Predstava;
 
 import javax.swing.*;
@@ -89,6 +90,8 @@ public class DodavanjePredstave extends JDialog {
                     nova.setNaziv(naziv);
                     nova.setCena(parsiranaCena);
                     svePredstave.add(nova);
+                    //cuvanje
+                    Fajlovi.SnimiUFajl(svePredstave,"./predstave.p");
                     //da se rerenderuje tabela
                     ((AbstractTableModel) tabela.getModel()).fireTableDataChanged();
                     setVisible(false);
