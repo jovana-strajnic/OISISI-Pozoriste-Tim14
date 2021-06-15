@@ -30,7 +30,7 @@ public class PrikazIzvestaja extends JDialog {
         JSplitPane jsp=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
         jsp.setTopComponent(add(new JScrollPane(tabela)));
-        jsp.setBottomComponent(new JLabel(""+ukupno));
+        jsp.setBottomComponent(new JLabel("UKUPNO: "+ukupno));
         add(jsp);
 
     }

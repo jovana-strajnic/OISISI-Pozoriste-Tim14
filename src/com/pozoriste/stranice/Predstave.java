@@ -2,10 +2,7 @@ package com.pozoriste.stranice;
 
 import com.pozoriste.Fajlovi;
 import com.pozoriste.GlavniProzor;
-import com.pozoriste.model.Karta;
-import com.pozoriste.model.Korisnik;
-import com.pozoriste.model.Predstava;
-import com.pozoriste.model.TipKorisnika;
+import com.pozoriste.model.*;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -87,7 +84,21 @@ public class Predstave extends JPanel {
         izvestajZaSve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               // GlavniProzor.getAktivniProzor().promeniStranicu(new Pocetna());
+                List<StavkaIzvestaja> izvestajlist=new LinkedList<>();
+
+                for(Predstava pr: svePredstave){
+                    StavkaIzvestaja si= new StavkaIzvestaja();
+
+                    si.setId(pr.getSifra());
+                    float cena=0;
+                    for(Karta kar : sveKarte){
+                        if(kar.getPredstava().getSifra()==pr.getSifra())
+                            cena+=kar.getCena();
+                    }
+                    si.setCena(cena);
+                    izvestajlist.add(si);
+                }
+                new PrikazIzvestaja(izvestajlist).setVisible(true);
             }
         });
         if (ulogovanikorisnik.getTipkorisnika() == TipKorisnika.ADMINISTRATOR)
