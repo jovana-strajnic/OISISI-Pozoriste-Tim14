@@ -6,6 +6,7 @@ import com.pozoriste.model.*;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
@@ -41,6 +42,7 @@ public class Predstave extends JPanel {
         tabela.setAutoCreateRowSorter(true);
 
         tabela.setColumnSelectionAllowed(false);
+        tabela.setRowHeight(40);
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         Action detalji = new AbstractAction() {
             @Override
@@ -64,13 +66,13 @@ public class Predstave extends JPanel {
             }
         };
 
-        //za dugme za detalje koristi se ova klasa sa interneta
-        new ButtonColumn(tabela, izmena, 5);
+        //za dugme za izmene koristi se ova klasa sa interneta
+        if (ulogovanikorisnik.getTipkorisnika() == TipKorisnika.ADMINISTRATOR)
+            new ButtonColumn(tabela, izmena, 5);
 
 
         //da se vidi zaglavlje i da moze da se skroluje
         JScrollPane pane = new JScrollPane(tabela);
-        add(pane);
         JButton dodaj = new JButton("Dodaj");
         dodaj.addActionListener(new ActionListener() {
             @Override
@@ -78,9 +80,6 @@ public class Predstave extends JPanel {
                 new DodavanjePredstave(svePredstave, tabela, null).setVisible(true);
             }
         });
-        //samo za admina dajemo da ima dodavanje
-        if (ulogovanikorisnik.getTipkorisnika() == TipKorisnika.ADMINISTRATOR)
-            add(dodaj);
 
 
         JButton izvestajZaSve = new JButton("Izvestaj");
@@ -104,8 +103,6 @@ public class Predstave extends JPanel {
                 new PrikazIzvestaja(izvestajlist).setVisible(true);
             }
         });
-        if (ulogovanikorisnik.getTipkorisnika() == TipKorisnika.ADMINISTRATOR)
-            add(izvestajZaSve);
 
 
         //odjava
@@ -120,14 +117,31 @@ public class Predstave extends JPanel {
 
         //pretrage
         JButton pretraga = new JButton("Pretraga");
-        add(pretraga);
         pretraga.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new IzborFiltera(tabela).setVisible(true);
             }
         });
-        add(odjava);
+
+        JPanel dugmici = new JPanel();
+        dugmici.setLayout(new BoxLayout(dugmici, BoxLayout.Y_AXIS));
+
+
+        dugmici.add(pretraga);
+        //samo za admina dajemo da ima dodavanje
+        if (ulogovanikorisnik.getTipkorisnika() == TipKorisnika.ADMINISTRATOR)
+            dugmici.add(dodaj);
+        if (ulogovanikorisnik.getTipkorisnika() == TipKorisnika.ADMINISTRATOR)
+            dugmici.add(izvestajZaSve);
+        dugmici.add(odjava);
+
+        JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        split.setLeftComponent(pane);
+        split.setRightComponent(dugmici);
+        split.setDividerLocation(700);
+        setLayout(new BorderLayout());
+        add(split, BorderLayout.CENTER);
 
     }
 

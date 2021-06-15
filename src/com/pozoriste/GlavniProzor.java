@@ -9,7 +9,7 @@ public class GlavniProzor extends JFrame {
 
     public GlavniProzor() {
         aktivniProzor = this;
-        setSize(700, 400);
+        setSize(850, 650);
         add(new Pocetna());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);

@@ -13,7 +13,7 @@ import java.util.Date;
 public class IzborFiltera extends JDialog {
     public IzborFiltera(JTable tabela) {
         setModal(true);
-        setSize(new Dimension(300, 500));
+        setSize(new Dimension(300, 380));
 
         final ButtonGroup grupa = new ButtonGroup();
         final JRadioButton naziv = new JRadioButton("Naziv", true);
