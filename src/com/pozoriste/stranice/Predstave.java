@@ -36,6 +36,9 @@ public class Predstave extends JPanel {
             sveKarte = new LinkedList<Karta>();
         JTable tabela = new JTable();
         tabela.setModel(new ModelTabele(svePredstave, ulogovanikorisnik));
+        
+        //sortiranje
+        tabela.setAutoCreateRowSorter(true);
 
         tabela.setColumnSelectionAllowed(false);
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -113,7 +116,18 @@ public class Predstave extends JPanel {
                 GlavniProzor.getAktivniProzor().promeniStranicu(new Pocetna());
             }
         });
+
+
+        //pretrage
+        JButton pretraga = new JButton("Pretraga");
+        add(pretraga);
+        pretraga.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+new IzborFiltera().setVisible(true);            }
+        });
         add(odjava);
+
     }
 
 
