@@ -25,7 +25,7 @@ public class Predstave extends JPanel {
     private List<Karta> sveKarte;
 
 
-    public Predstave(Korisnik k,List<Korisnik> sviKorisnici) {
+    public Predstave(Korisnik k, List<Korisnik> sviKorisnici) {
         ulogovanikorisnik = k;
         svePredstave = (List<Predstava>) Fajlovi.ProcitajIzFajla("./predstave.p");
         if (svePredstave == null)
@@ -36,7 +36,7 @@ public class Predstave extends JPanel {
             sveKarte = new LinkedList<Karta>();
         JTable tabela = new JTable();
         tabela.setModel(new ModelTabele(svePredstave, ulogovanikorisnik));
-        
+
         //sortiranje
         tabela.setAutoCreateRowSorter(true);
 
@@ -46,7 +46,7 @@ public class Predstave extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selektovanRed = Integer.valueOf(e.getActionCommand());
-                new DetaljiPredstave(svePredstave.get(selektovanRed), ulogovanikorisnik, sveKarte, svePredstave,sviKorisnici).setVisible(true);
+                new DetaljiPredstave(svePredstave.get(selektovanRed), ulogovanikorisnik, sveKarte, svePredstave, sviKorisnici).setVisible(true);
                 ((ModelTabele) tabela.getModel()).fireTableDataChanged();
             }
         };
@@ -87,16 +87,16 @@ public class Predstave extends JPanel {
         izvestajZaSve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<StavkaIzvestaja> izvestajlist=new LinkedList<>();
+                List<StavkaIzvestaja> izvestajlist = new LinkedList<>();
 
-                for(Predstava pr: svePredstave){
-                    StavkaIzvestaja si= new StavkaIzvestaja();
+                for (Predstava pr : svePredstave) {
+                    StavkaIzvestaja si = new StavkaIzvestaja();
 
                     si.setId(pr.getSifra());
-                    float cena=0;
-                    for(Karta kar : sveKarte){
-                        if(kar.getPredstava().getSifra()==pr.getSifra())
-                            cena+=kar.getCena();
+                    float cena = 0;
+                    for (Karta kar : sveKarte) {
+                        if (kar.getPredstava().getSifra() == pr.getSifra())
+                            cena += kar.getCena();
                     }
                     si.setCena(cena);
                     izvestajlist.add(si);
@@ -124,7 +124,8 @@ public class Predstave extends JPanel {
         pretraga.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-new IzborFiltera().setVisible(true);            }
+                new IzborFiltera(tabela).setVisible(true);
+            }
         });
         add(odjava);
 
